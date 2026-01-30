@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["DOM", "DOM.Iterable", "ES2020"],
+    "jsx": "react-jsx",
+
+    "module": "ESNext",
+    "moduleResolution": "node",
+
+    "strict": true,
+    "skipLibCheck": true,
+
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+
+    "incremental": true,
+    "tsBuildInfoFile": "./node_modules/.tsbuildinfo/app.tsbuildinfo"
+  },
+  "include": ["src"]
+}
