@@ -11,17 +11,7 @@ export function getAllSeries(): Series[] {
     title: item.title || item.name,
     image: item.image || item.poster || '/placeholder.jpg',
     rating: item.rating || item.vote || 0,
-    comments: item.comments || [], // ✅ REQUIRED
   }))
 
- const normalizedApi: Series[] = seriesData.map((item: any) => ({
-  id: String(item.id),
-  title: item.title || item.name,
-  image: item.image || item.poster || '/placeholder.jpg',
-  rating: item.rating || item.vote || 0,
-  comments: [],
-}))
-
-
-  return [...normalizedApi, ...normalizedCustom]
+  return [...seriesData, ...normalizedCustom]
 }

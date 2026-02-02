@@ -14,12 +14,11 @@ export default function AddSeries() {
     e.preventDefault()
 
     const newSeries = {
-      id: crypto.randomUUID(), // ⭐ very important
+      id: Date.now(), // مهم جدًا
       title,
-      description,
-      comments: [],
-    };
-    
+      image,
+      rating,
+    }
 
     const existing = JSON.parse(
       localStorage.getItem('custom-series') || '[]'
@@ -38,9 +37,15 @@ export default function AddSeries() {
         <input
           required
           placeholder="Series title"
-          className="w-full p-3 rounded text-white bg-zinc-800"
+          className="w-full p-3 text-white rounded bg-zinc-800"
           value={title}
           onChange={e => setTitle(e.target.value)}
+        />
+        <input
+          placeholder="Series description"
+          className="w-full p-3 text-white rounded bg-zinc-800"
+          value={title}
+          onChange={e => setDescription(e.target.value)}
         />
 
         <input
@@ -56,7 +61,7 @@ export default function AddSeries() {
           min={1}
           max={5}
           step={0.1}
-          className="w-full p-3 rounded bg-zinc-800"
+          className="w-full p-3 rounded text-white bg-zinc-800"
           value={rating}
           onChange={e => setRating(Number(e.target.value))}
         />

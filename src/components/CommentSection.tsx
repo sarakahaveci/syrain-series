@@ -1,35 +1,21 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+import { Comment } from '../types/series'
 
-type Comment = {
-  id: string
-  text: string
-  createdAt: string
+type Props = {
+  seriesId: string
 }
 
-export default function CommentSection({ seriesId }: { seriesId: string }) {
-  const [comments, setComments] = useState<Comment[]>([])
+export default function CommentSection({ seriesId }: Props) {
+  const [comments, setComments] = useState<Comment[]>(() => {
+    const saved = localStorage.getItem(`comments-${seriesId}`)
+    return saved ? JSON.parse(saved) : []
+  })
+
   const [text, setText] = useState('')
-  const [editingId, setEditingId] = useState<string | null>(null)
 
   const isAdmin = localStorage.getItem('isAdmin') === 'true'
 
-  // Load comments
-  useEffect(() => {
-    const stored = localStorage.getItem(`comments-${seriesId}`)
-    if (stored) {
-      setComments(JSON.parse(stored))
-    }
-  }, [seriesId])
-
-  function saveComments(updated: Comment[]) {
-    setComments(updated)
-    localStorage.setItem(
-      `comments-${seriesId}`,
-      JSON.stringify(updated)
-    )
-  }
-
-  function addComment(e: React.FormEvent) {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!text.trim()) return
 
@@ -39,85 +25,51 @@ export default function CommentSection({ seriesId }: { seriesId: string }) {
       createdAt: new Date().toISOString(),
     }
 
-    saveComments([newComment, ...comments])
-    setText('')
-  }
-
-  function deleteComment(id: string) {
-    saveComments(comments.filter(c => c.id !== id))
-  }
-
-  function startEdit(comment: Comment) {
-    setEditingId(comment.id)
-    setText(comment.text)
-  }
-
-  function saveEdit() {
-    if (!editingId) return
-
-    saveComments(
-      comments.map(c =>
-        c.id === editingId ? { ...c, text } : c
-      )
+    const updated = [newComment, ...comments]
+    setComments(updated)
+    localStorage.setItem(
+      `comments-${seriesId}`,
+      JSON.stringify(updated)
     )
 
-    setEditingId(null)
     setText('')
   }
 
   return (
-    <div className="mt-12 border-t border-zinc-800 pt-6">
-      <h3 className="text-xl font-semibold mb-4">Comments</h3>
+    <div className="mt-10 border-t text-white border-zinc-800 pt-6">
+      <h3 className="text-lg font-semibold mb-4">Comments</h3>
 
-      {comments.length === 0 && (
-        <p className="text-zinc-400 text-sm">No comments yet.</p>
-      )}
+      {/* Comments list */}
+      <div className="space-y-3 mb-6">
+        {comments.length === 0 && (
+          <p className="text-zinc-400 text-sm">No comments yet.</p>
+        )}
 
-      <div className="space-y-4 mb-6">
-        {comments.map(comment => (
+        {comments.map((c) => (
           <div
-            key={comment.id}
-            className="bg-zinc-900 p-4 rounded-md"
+            key={c.id}
+            className="bg-zinc-900 text-white rounded-md p-3 text-sm"
           >
-            <p className="text-sm text-white">{comment.text}</p>
+            <p>{c.text}</p>
             <span className="text-xs text-zinc-500">
-              {new Date(comment.createdAt).toLocaleDateString()}
+              {new Date(c.createdAt).toLocaleDateString()}
             </span>
-
-            {isAdmin && (
-              <div className="flex gap-3 mt-2 text-xs">
-                <button
-                  onClick={() => startEdit(comment)}
-                  className="text-yellow-400"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => deleteComment(comment.id)}
-                  className="text-red-400"
-                >
-                  Delete
-                </button>
-              </div>
-            )}
           </div>
         ))}
       </div>
 
+      {/* Admin only */}
       {isAdmin && (
-        <form
-          onSubmit={editingId ? saveEdit : addComment}
-          className="space-y-3"
-        >
+        <form onSubmit={handleSubmit} className="space-y-3">
           <textarea
             value={text}
-            onChange={e => setText(e.target.value)}
+            onChange={(e) => setText(e.target.value)}
             placeholder="Write a comment..."
-            className="w-full bg-zinc-800 text-white p-3 rounded-md text-sm outline-none focus:ring-2 focus:ring-pink-500"
+            className="w-full bg-zinc-800 p-3 rounded-md text-sm outline-none focus:ring-2 focus:ring-pink-500"
           />
 
           <button className="bg-pink-600 px-4 py-2 rounded-md text-sm font-medium">
-            {editingId ? 'Save Edit' : 'Add Comment'}
+            Add Comment
           </button>
         </form>
       )}
