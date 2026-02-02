@@ -7,17 +7,19 @@ export default function AddSeries() {
 
   const [title, setTitle] = useState('')
   const [image, setImage] = useState('')
+  const [description, setDescription] = useState('')
   const [rating, setRating] = useState(4)
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
 
     const newSeries = {
-      id: Date.now(), // مهم جدًا
+      id: crypto.randomUUID(), // ⭐ very important
       title,
-      image,
-      rating,
-    }
+      description,
+      comments: [],
+    };
+    
 
     const existing = JSON.parse(
       localStorage.getItem('custom-series') || '[]'
@@ -36,7 +38,7 @@ export default function AddSeries() {
         <input
           required
           placeholder="Series title"
-          className="w-full p-3 rounded bg-zinc-800"
+          className="w-full p-3 rounded text-white bg-zinc-800"
           value={title}
           onChange={e => setTitle(e.target.value)}
         />

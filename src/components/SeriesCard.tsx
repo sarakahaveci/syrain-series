@@ -24,7 +24,7 @@ export default function SeriesCard(props: Props) {
       )}
 
       <div className="p-4">
-        <h3 className="font-bold text-lg">{title}</h3>
+        <h3 className="font-bold text-lg text-white">{title}</h3>
         <RatingStars rating={rating} />
 
         <button

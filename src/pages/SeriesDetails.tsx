@@ -3,16 +3,31 @@ import { useEffect, useState } from 'react'
 import { getSeriesDetails } from '../services/tmdb'
 import RatingStars from '../components/RatingStars'
 import { Series } from '../types/Series'
+import CommentSection from '../components/CommentSection'
+
+type Comment = {
+  id: string
+  text: string
+  createdAt: string
+}
 
 export default function SeriesDetails() {
-  const { id } = useParams()
-  const [series, setSeries] = useState<any>(null)
+  const { id } = useParams<{ id: string }>()
+
+  const [series, setSeries] = useState<Series | any>(null)
   const [loading, setLoading] = useState(true)
+  const [comments, setComments] = useState<Comment[]>([])
 
   useEffect(() => {
     if (!id) return
 
-    // 1️⃣ جرّبي نلاقيه بالمسلسلات المضافة
+    // ✅ load comments
+    const stored = localStorage.getItem(`comments-${id}`)
+    if (stored) {
+      setComments(JSON.parse(stored))
+    }
+
+    // 1️⃣ check locally added series
     const localSeries: Series[] = JSON.parse(
       localStorage.getItem('custom-series') || '[]'
     )
@@ -25,16 +40,24 @@ export default function SeriesDetails() {
       return
     }
 
-    // 2️⃣ إذا مو محلي → TMDB
+    // 2️⃣ fetch from TMDB
     getSeriesDetails(id).then(data => {
       setSeries(data)
       setLoading(false)
     })
   }, [id])
 
-  if (loading) return <p className="text-center mt-10">Loading...</p>
+  if (!id) {
+    return <p className="text-center mt-10">Invalid series</p>
+  }
 
-  if (!series) return <p className="text-center mt-10">Series not found</p>
+  if (loading) {
+    return <p className="text-center mt-10">Loading...</p>
+  }
+
+  if (!series) {
+    return <p className="text-center mt-10">Series not found</p>
+  }
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
@@ -52,16 +75,15 @@ export default function SeriesDetails() {
       </h1>
 
       <RatingStars
-        rating={
-          series.rating
-            ? series.rating
-            : series.vote_average / 2
-        }
+        rating={series.rating ? series.rating : series.vote_average / 2}
       />
 
-      <p className="mt-4 text-gray-300">
+      <p className="mt-4 text-gray-900">
         {series.overview || 'No description available.'}
       </p>
+
+      {/* ✅ COMMENTS */}
+      <CommentSection seriesId={id} />
     </div>
   )
 }
