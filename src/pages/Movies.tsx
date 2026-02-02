@@ -1,4 +1,3 @@
 export default function Movies() {
-    return <div className="p-6">الأفلام</div>
-  }
-  
+  return <div className="p-6">Movies page</div>
+}

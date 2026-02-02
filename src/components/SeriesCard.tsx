@@ -1,39 +1,39 @@
-import { motion } from 'framer-motion'
-import FavoriteButton from './FavouriteButton'
 import { Link } from 'react-router-dom'
+import RatingStars from './RatingStars'
+import { useFavourite } from '../context/FavouriteContext'
+import { Series } from '../types/Series'
 
-type SeriesCardProps = {
-  id: string
-  title: string
-  image: string
-  rating: number
-}
+type Props = Series
 
-export default function SeriesCard({
-  id,
-  title,
-  image,
-  rating
-}: SeriesCardProps) {
+export default function SeriesCard(props: Props) {
+  const { id, title, image, rating } = props
+  const { toggleFavourite, isFavourite } = useFavourite()
+
+  const imgSrc = image && image !== ''
+    ? image
+    : '/placeholder.jpg'
+
   return (
-    <motion.div whileHover={{ y: -8 }}>
-      <Link to={`/series/${id}`} className="relative group">
-        <div className="rounded-2xl overflow-hidden bg-white shadow-md">
-          <div className="relative">
-            <img
-              src={image}
-              alt={title}
-              className="h-56 w-full object-cover transition-transform duration-500 group-hover:scale-110"
-            />
-            <FavoriteButton id={id} />
-          </div>
+    <div className="bg-zinc-900 rounded-xl overflow-hidden hover:scale-105 transition">
+      {id < 1_000_000_000 ? (
+        <Link to={`/series/${id}`}>
+          <img src={imgSrc} alt={title} className="h-72 w-full object-cover" />
+        </Link>
+      ) : (
+        <img src={imgSrc} alt={title} className="h-72 w-full object-cover" />
+      )}
 
-          <div className="p-4">
-            <h3 className="font-bold text-lg">{title}</h3>
-            <p className="text-indigo-600">⭐ {rating}</p>
-          </div>
-        </div>
-      </Link>
-    </motion.div>
+      <div className="p-4">
+        <h3 className="font-bold text-lg">{title}</h3>
+        <RatingStars rating={rating} />
+
+        <button
+          onClick={() => toggleFavourite(props)}
+          className="mt-2 text-pink-400"
+        >
+          {isFavourite(id) ? '♥ Remove' : '♡ Add to favorites'}
+        </button>
+      </div>
+    </div>
   )
 }

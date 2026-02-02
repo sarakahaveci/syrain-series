@@ -1,21 +1,30 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import SeriesCard from './components/SeriesCard'
-import Contact from './pages/Contact'
-import Home from './pages/Home'
-import Movies from './pages/Movies'
-import SeriesDetails from './pages/SeriesDetails'
-
-
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Movies from "./pages/Movies";
+import Contact from "./pages/Contact";
+import SeriesDetails from "./pages/SeriesDetails";
+import Navbar from "./components/Navbar";
+import Favorites from "./pages/Favorites";
+import AddSeries from "./pages/AddSeries";
+import Search from "./pages/Search";
 export default function App() {
   return (
     <BrowserRouter>
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
+
+        {/* Pages */}
+        <Route path="/search" element={<Search />} />
+        <Route path="/favorites" element={<Favorites />} />
+        <Route path="/add-series" element={<AddSeries />} />
+        <Route path="/series" element={<Home />} />
+        <Route path="/movies" element={<Movies />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/seriesdetails" element={<SeriesDetails />} />
+        {/* Details */}
         <Route path="/series/:id" element={<SeriesDetails />} />
-        {/* <Route path="/seriescard/:id" element={<SeriesCard />} /> */}
-        <Route path="/movies/:id" element={<Movies />} />
-        <Route path="/contact/:id" element={<Contact />} />
       </Routes>
     </BrowserRouter>
-  )
+  );
 }

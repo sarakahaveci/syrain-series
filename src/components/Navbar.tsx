@@ -1,9 +1,18 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 
 export default function Navbar() {
-  return (<>
-    <nav className="bg-blue-600 text-white flex justify-between p-4">
-</nav>
+  const [query, setQuery] = useState('')
+  const navigate = useNavigate()
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (!query.trim()) return
+    navigate(`/search?q=${query}`)
+    setQuery('')
+  }
+
+  return (
     <nav className="w-full bg-black text-white">
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         
@@ -12,24 +21,29 @@ export default function Navbar() {
           <Link to="/">Syrian Series</Link>
         </h1>
 
-        {/* Desktop Menu */}
+        {/* Menu */}
         <ul className="hidden md:flex gap-6 items-center">
-          <li className="hover:text-pink-400 transition">
-            <Link to="/">Home</Link>
-          </li>
-          <li className="hover:text-pink-400 transition">
-            <Link to="/series">Series</Link>
-          </li>
-          <li className="hover:text-pink-400 transition">
-            <Link to="/movies">Movies</Link>
-          </li>
-          <li className="hover:text-pink-400 transition">
-            <Link to="/contact">Contact</Link>
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/add-series">Add Series</Link></li>
+          <li><Link to="/">Series</Link></li>
+          <li><Link to="/favorites">Favorites ❤️</Link></li>
+          <li><Link to="/movies">Movies</Link></li>
+          <li><Link to="/contact">Contact</Link></li>
+
+          {/* 🔍 Search */}
+          <li>
+            <form onSubmit={handleSubmit}>
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search series..."
+                className="bg-zinc-800 px-3 py-1 rounded-md text-sm outline-none focus:ring-2 focus:ring-pink-500"
+              />
+            </form>
           </li>
         </ul>
 
       </div>
     </nav>
-    </>
   )
 }

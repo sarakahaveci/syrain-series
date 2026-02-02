@@ -6,8 +6,9 @@ import { FavouriteProvider } from './context/FavouriteContext'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <FavouriteProvider>
-      <App />
-    </FavouriteProvider>
+<FavouriteProvider>
+  <App />
+</FavouriteProvider>
+
   </React.StrictMode>
 )
