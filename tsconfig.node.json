@@ -1,9 +1,12 @@
 {
   "compilerOptions": {
-    "composite": true,
-    "incremental": true,
-    "module": "ESNext",
-    "moduleResolution": "node"
-  },
-  "include": ["vite.config.ts"]
+    "target": "ESNext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": ["node"],
+    "composite": true
+  }
 }

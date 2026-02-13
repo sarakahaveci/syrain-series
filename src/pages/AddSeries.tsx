@@ -8,7 +8,7 @@ export default function AddSeries() {
   const [title, setTitle] = useState('')
   const [image, setImage] = useState('')
   const [description, setDescription] = useState('')
-  const [rating, setRating] = useState(4)
+  const [rating, setRating] = useState(0)
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()

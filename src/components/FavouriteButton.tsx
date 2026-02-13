@@ -1,23 +1,30 @@
-import { motion } from 'framer-motion'
-import { useFavorites } from '../context/FavouriteContext'
+import { createContext, useContext, useState, ReactNode } from 'react'
 
-export default function FavoriteButton({ id }: { id: string }) {
-  const { favorites, toggleFavorite } = useFavorites()
-  const isFav = favorites.includes(id)
+export type FavouriteContextType = {
+  favorites: string[]          // add this
+  toggleFavorite: (id: string) => void  // add this
+}
+
+const FavouriteContext = createContext<FavouriteContextType | undefined>(undefined)
+
+export const FavouriteProvider = ({ children }: { children: ReactNode }) => {
+  const [favorites, setFavorites] = useState<string[]>([])
+
+  const toggleFavorite = (id: string) => {
+    setFavorites((prev) =>
+      prev.includes(id) ? prev.filter(f => f !== id) : [...prev, id]
+    )
+  }
 
   return (
-    <motion.button
-      whileTap={{ scale: 0.8 }}
-      whileHover={{ scale: 1.1 }}
-      onClick={(e) => {
-        e.preventDefault()
-        toggleFavorite(id)
-      }}
-      className={`absolute top-3 right-3 text-2xl ${
-        isFav ? 'text-red-500' : 'text-white'
-      }`}
-    >
-      {isFav ? '❤️' : '🤍'}
-    </motion.button>
+    <FavouriteContext.Provider value={{ favorites, toggleFavorite }}>
+      {children}
+    </FavouriteContext.Provider>
   )
+}
+
+export const useFavourite = () => {
+  const context = useContext(FavouriteContext)
+  if (!context) throw new Error('useFavourite must be used within FavouriteProvider')
+  return context
 }

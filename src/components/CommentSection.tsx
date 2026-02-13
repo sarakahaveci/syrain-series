@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Comment } from '../types/series'
+import { Comment } from '../types/Series'
 
 type Props = {
   seriesId: string

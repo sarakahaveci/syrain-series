@@ -13,7 +13,7 @@ type FavouriteContextType = {
   isFavourite: (id: number) => boolean
 }
 
-const FavouriteContext = createContext<FavouriteContextType | null>(null)
+export const FavouriteContext = createContext<FavouriteContextType | null>(null)
 
 export function FavouriteProvider({ children }: { children: React.ReactNode }) {
   const [favourites, setFavourites] = useState<FavouriteItem[]>([])
