@@ -1,42 +1,43 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useEffect, useState } from "react"
 
-type FavouriteItem = {
+export type FavouriteItem = {
   id: number
   title: string
   image: string
   rating: number
 }
 
-type FavouriteContextType = {
+export type FavouriteContextType = {
   favourites: FavouriteItem[]
   toggleFavourite: (item: FavouriteItem) => void
   isFavourite: (id: number) => boolean
 }
 
-export const FavouriteContext = createContext<FavouriteContextType | null>(null)
+const FavouriteContext = createContext<FavouriteContextType | undefined>(undefined)
 
 export function FavouriteProvider({ children }: { children: React.ReactNode }) {
-  const [favourites, setFavourites] = useState<FavouriteItem[]>([])
+  const [favourites, setFavourites] = useState<FavouriteItem[]>(() => {
+    const stored = localStorage.getItem("favourites")
+    return stored ? JSON.parse(stored) : []
+  })
 
   useEffect(() => {
-    const stored = localStorage.getItem('favourites')
-    if (stored) setFavourites(JSON.parse(stored))
-  }, [])
-
-  useEffect(() => {
-    localStorage.setItem('favourites', JSON.stringify(favourites))
+    localStorage.setItem("favourites", JSON.stringify(favourites))
   }, [favourites])
 
-  const toggleFavourite = (item: FavouriteItem) => {
-    setFavourites(prev =>
-      prev.some(f => f.id === item.id)
-        ? prev.filter(f => f.id !== item.id)
-        : [...prev, item]
-    )  
+  function toggleFavourite(item: FavouriteItem) {
+    setFavourites(prev => {
+      const exists = prev.some(f => f.id === item.id)
+      if (exists) {
+        return prev.filter(f => f.id !== item.id)
+      }
+      return [...prev, item]
+    })
   }
 
-  const isFavourite = (id: number) =>
-    favourites.some(f => f.id === id)
+  function isFavourite(id: number) {
+    return favourites.some(f => f.id === id)
+  }
 
   return (
     <FavouriteContext.Provider value={{ favourites, toggleFavourite, isFavourite }}>
@@ -47,6 +48,8 @@ export function FavouriteProvider({ children }: { children: React.ReactNode }) {
 
 export function useFavourite() {
   const context = useContext(FavouriteContext)
-  if (!context) throw new Error('useFavourite must be used inside FavouriteProvider')
+  if (!context) {
+    throw new Error("useFavourite must be used within FavouriteProvider")
+  }
   return context
 }

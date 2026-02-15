@@ -1,7 +1,15 @@
-import { Series } from '../types/Series'
+import { Series } from "../types/Series"
 import { seriesData } from '../components/data/series'
+import { useState } from 'react'
 
-export function getAllSeries(): Series[] {
+
+let series: Series[] = []
+
+export const getSeries = (): Series[] => series
+
+export const addSeries = (item: Series): void => {
+  const [series, setSeries] = useState<Series[]>([])
+
   const rawCustom = JSON.parse(
     localStorage.getItem('custom-series') || '[]'
   )
@@ -13,5 +21,4 @@ export function getAllSeries(): Series[] {
     rating: item.rating || item.vote || 0,
   }))
 
-  return [...seriesData, ...normalizedCustom]
 }

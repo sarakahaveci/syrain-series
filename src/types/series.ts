@@ -1,15 +1,20 @@
 
-
-export type Series = {
-  id: number;
-  title: string;
-  image: string;
-  rating: number;
-};
-
-
 export type Comment = {
   id: string;
   text: string;
   createdAt: string;
 };
+
+export type Series = {
+  id: number
+  title: string
+  image: string
+  rating: number
+}
+export type TmdbItem = {
+  id: number
+  name: string
+  poster_path: string | null
+  vote_average: number
+}
+

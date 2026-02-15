@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { searchSeries } from '../api/tmdb'
-import { getAllSeries } from '../services/seriesStore'
+import { getSeries } from '../services/seriesStore'
 import SeriesCard from '../components/SeriesCard'
 import { Series } from '../types/Series'
 
@@ -18,7 +18,7 @@ export default function Search() {
       setLoading(true)
 
       // 🔹 manual + static
-      const localSeries = getAllSeries().filter(s =>
+      const localSeries = getSeries().filter(s =>
         s.title.toLowerCase().includes(query.toLowerCase())
       )
 
