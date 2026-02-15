@@ -5,7 +5,7 @@ export type Comment = {
   createdAt: string;
 };
 
-export type Series = {
+export interface Series {
   id: number
   title: string
   image: string
