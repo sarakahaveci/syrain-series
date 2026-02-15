@@ -1,4 +1,4 @@
-import { Series } from "../types/Series"
+import { Series } from "../types/series"
 import { seriesData } from '../components/data/series'
 import { useState } from 'react'
 

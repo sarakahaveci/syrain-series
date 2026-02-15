@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import RatingStars from './RatingStars'
 import { useFavourite } from '../context/FavouriteContext'
-import { Series } from '../types/Series'
+import { Series } from '../types/series'
 
 type Props = Series
 

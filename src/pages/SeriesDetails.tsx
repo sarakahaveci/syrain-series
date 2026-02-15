@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { getSeriesDetails } from '../services/tmdb'
 import RatingStars from '../components/RatingStars'
-import { Series } from '../types/Series'
+import { Series } from '../types/series'
 import CommentSection from '../components/CommentSection'
 
 

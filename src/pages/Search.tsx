@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom'
 import { searchSeries } from '../api/tmdb'
 import { getSeries } from '../services/seriesStore'
 import SeriesCard from '../components/SeriesCard'
-import { Series } from '../types/Series'
+import { Series } from '../types/series'
 
 export default function Search() {
   const [params] = useSearchParams()

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { getPopularSeries } from '../api/tmdb';
 import SeriesCard from '../components/SeriesCard';
 import { getSeries } from '../services/seriesStore';
-import {Series} from '../types/Series'
+import {Series} from '../types/series'
 
 type TMDBItem = {
     id: number
